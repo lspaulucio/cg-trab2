@@ -11,6 +11,7 @@ FLAGS=-Wall
 
 #Libs
 OPENGL_LIB=-lGL -lGLU -lglut
+MATH_LIB=-lm
 
 #Sources variables
 TINYXML2_SOURCE= $(wildcard tinyxml2/*.cpp)
@@ -21,7 +22,7 @@ EXECUTABLE_NAME=trabalhocg
 
 all: $(TINYXML2_SOURCE:.cpp=.o) $(SOURCES:.cpp=.o)
 	@echo Compiling program
-	@$(CC) main.cpp $^ $(FLAGS) $(OPENGL_LIB) -o $(EXECUTABLE_NAME)
+	@$(CC) main.cpp $^ $(FLAGS) $(OPENGL_LIB) $(MATH_LIB) -o $(EXECUTABLE_NAME)
 	@echo Done
 
 %.o: %.cpp
