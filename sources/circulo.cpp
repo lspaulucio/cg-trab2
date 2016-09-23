@@ -85,5 +85,5 @@ bool Circulo::insideCircle(float x, float y) const
     }
 }
 
-Circulo::~Circulo(){}
+Circulo::~Circulo(){std::cout << "oi\n";};
 
