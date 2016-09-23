@@ -25,15 +25,19 @@ class Circulo
 
         const float getRGBColors(COLOR_ID) const;
 
+        int colorVerification(std::string);
+
         void setRGBColors(const float[3]);
+
+        void setRGBColors(std::string);
 
         float getXc() const;
 
-        void setXc(float xc);
+        void setXc(float);
 
         float getYc() const;
 
-        void setYc(float yc);
+        void setYc(float);
 
         const std::string &getId() const;
 

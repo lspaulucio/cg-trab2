@@ -8,8 +8,24 @@ Retangulo::Retangulo()
         vertices[i][Z_AXIS] = 0;
 }
 
-void Retangulo::setHeight(float height) {
-   this->height = height;
+float Retangulo::getHeight() const
+{
+   return height;
+}
+
+void Retangulo::setHeight(float height)
+{
+    this->height = height;
+}
+
+float Retangulo::getWidth() const
+{
+   return width;
+}
+
+void Retangulo::setWidth(float width)
+{
+   this->width = width;
 }
 
 const float* Retangulo::getRGBColors() const
@@ -20,6 +36,52 @@ const float* Retangulo::getRGBColors() const
 const float Retangulo::getRGBColors(COLOR_ID id) const
 {
     return RGBColors[id];
+}
+
+int Retangulo::colorVerification(std::string color) //Check the color's name
+{
+    if(!color.compare("white")) //If color is white
+        return WHITE;
+    if(!color.compare("black")) //If color is black
+        return BLACK;
+    if(!color.compare("red")) //If color is red
+        return RED;
+    if(!color.compare("green")) //If color is green
+        return GREEN;
+    if(!color.compare("blue")) //If color is blue
+        return BLUE;
+
+    return -1;
+}
+
+void Retangulo::setRGBColors(std::string color_name)
+{
+    float colors[3] = {0.0};
+
+    switch(colorVerification(color_name)) //Choose RGB values for each color's type
+    {
+        case BLACK:
+            this->setRGBColors(colors);
+            break;
+        case WHITE:
+            colors[RED]= colors[GREEN] = colors[BLUE] = 1.0;
+            this->setRGBColors(colors);
+            break;
+        case RED:
+            colors[RED] = 1.0;
+            this->setRGBColors(colors);
+            break;
+        case GREEN:
+            colors[GREEN] = 1.0;
+            this->setRGBColors(colors);
+            break;
+        case BLUE:
+            colors[BLUE] = 1.0;
+            this->setRGBColors(colors);
+            break;
+        default:
+            std::cout << "Unknown color" << std::endl;
+    }
 }
 
 void Retangulo::setRGBColors(const float colors[3])
@@ -101,6 +163,5 @@ bool Retangulo::insideSquare(float x, float y) const
     else
         return false;
 }
-
 
 Retangulo::~Retangulo(){}

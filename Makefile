@@ -29,8 +29,8 @@ all: $(TINYXML2_SOURCE:.cpp=.o) $(SOURCES:.cpp=.o)
 	@echo Making object file: $@
 	@$(CC) -c $< $(FLAGS) -o $@
 
-run:
-	./$(EXECUTABLE_NAME)
+run: all
+	./$(EXECUTABLE_NAME) ./
 
 zip: clean
 	zip -r $(AUTHOR_NAME).zip main.cpp tinyxml2 sources Makefile

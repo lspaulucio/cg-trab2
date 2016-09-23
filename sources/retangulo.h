@@ -1,4 +1,4 @@
-#ifndef CRETANGULO_H
+#ifndef RETANGULO_H
 #define RETANGULO_H
 
 
@@ -24,11 +24,15 @@ public:
 
     float getHeight() const;
 
-    void setHeight(float height);
+    void setHeight(float);
 
     const float* getRGBColors() const;
 
     const float getRGBColors(COLOR_ID) const;
+
+    int colorVerification(std::string);
+
+    void setRGBColors(std::string);
 
     void setRGBColors(const float[3]);
 
