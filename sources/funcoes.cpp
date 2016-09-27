@@ -1,6 +1,13 @@
 #include "funcoes.h"
 
-void readXMLFile(const char *path, Retangulo &rect, vector<Circulo> &circulos)
+extern Janela MainWindow;
+extern Circulo player;
+extern Circulo arena[2];
+extern Retangulo rect;
+extern vector<Circulo> enemies;
+extern int key_status[256];
+
+void readXMLFile(const char *path)
 {
     const char config_file_name[] = "config.xml";
 
@@ -97,7 +104,18 @@ void readXMLFile(const char *path, Retangulo &rect, vector<Circulo> &circulos)
 
             //cout << "Circulo " << "cx: " << c.getXc() << " cy: " << c.getYc() << " r: " << c.getRadius() <<
             //" colors: " << c.getRGBColors(RED) << ", " << c.getRGBColors(GREEN) << ", " << c.getRGBColors(BLUE) << endl;
-            circulos.push_back(c);
+            if(!c.getId().compare("Jogador"))
+                player = c;
+            else if(!c.getId().compare("Pista"))
+                {
+                    if(arena[0].getRadius() > c.getRadius())
+                        arena[1] = c;
+                    else{
+                            arena[1] = arena[0];
+                            arena[0] = c;
+                        }
+                }
+                else enemies.push_back(c);
         }
         else if(!tipo.compare("rect")) //If is a rectangle
             {
@@ -114,110 +132,190 @@ void readXMLFile(const char *path, Retangulo &rect, vector<Circulo> &circulos)
                 // cout << pElem->FindAttribute("id")->Value() << endl;
                 // cout << pElem->FindAttribute("fill")->Value() << endl;
 
-                //cout << "Retangulo " << "x: " << rect.getXc() << " y: " << rect.getYc() <<
-                //" width: " << rect.getWidth() << " height: " << rect.getHeight() << " colors: " <<
-                //rect.getRGBColors(RED) << ", " << rect.getRGBColors(GREEN) << ", " << rect.getRGBColors(BLUE) << endl;
+                // cout << "Retangulo " << "x: " << rect.getXc() << " y: " << rect.getYc() <<
+                // " width: " << rect.getWidth() << " height: " << rect.getHeight() << " colors: " <<
+                // rect.getRGBColors(RED) << ", " << rect.getRGBColors(GREEN) << ", " << rect.getRGBColors(BLUE) << endl;
             }
-    }
+    }//End of file read
 
-    for(vector<Circulo>::iterator it = circulos.begin(); it != circulos.end(); it++)
-        cout << (*it).getId() << endl;
+    MainWindow.setHeight(2*arena[0].getRadius());
+    MainWindow.setWidth(2*arena[0].getRadius());
+    MainWindow.setTitle("Arena");
+
+    //Adjusting Y-Axis -> y = hy - y;
+    for(int i = 0; i < 2; i++)
+        arena[i].setYc(MainWindow.getHeight() - arena[i].getYc());
+
+    rect.setYc(MainWindow.getHeight() - rect.getYc());
+    rect.updateVertices();
+    // cout << "x: " << rect.getXc() << "y: " << rect.getYc() << endl;
+
+    for(vector<Circulo>::iterator it = enemies.begin(); it != enemies.end(); it++)
+        (*it).setYc(MainWindow.getHeight() - (*it).getYc());
+
+    player.setYc(MainWindow.getHeight() - player.getYc());
+
+    // for(vector<Circulo>::iterator it = enemies.begin(); it != enemies.end(); it++)
+    //     cout << (*it).getId() << endl;
 
     return;
 }
 
 //OpenGL functions
 
+void drawRectangle(Retangulo &rect)
+{
+    glColor3fv((GLfloat*)(rect.getRGBColors()));
+    glBegin(GL_POLYGON);
+        for(int i = 0; i < 4; i++)
+            glVertex3fv((GLfloat*)(rect.getVertices(i)));
+    glEnd();
+}
 
-// extern bool ALTERATION_STATE, INSIDE_SQUARE, DRAWN_FLAG;
-// extern float mx_click, my_click;
-// extern Janela MainWindow;
-// extern Quadrado Square;
-//
-// void init(void)
-// {
-//     /*Selecting background color*/
-//     //cout << " Janela "<< MainWindow.getBgColors(RED) << MainWindow.getBgColors(GREEN) << MainWindow.getBgColors(BLUE) << endl;
-//     glClearColor(MainWindow.getBgColors(RED),MainWindow.getBgColors(GREEN),MainWindow.getBgColors(BLUE), 0.0);
-//     glMatrixMode(GL_PROJECTION);
-//     glLoadIdentity();
-//     glOrtho(0.0,MainWindow.getWidth(),0.0,MainWindow.getHeight(),-1.0,1.0);
-// }
-//
-// void display(void)
-// {
-//     /*Cleaning pixels */
-//     glClear(GL_COLOR_BUFFER_BIT);
-//
-//     if(DRAWN_FLAG)
-//     {
-//         glColor3fv((GLfloat*)(Square.getRGBColors()));
-//         glBegin(GL_POLYGON);
-//         for(int i = 0; i < 4; i++)
-//             glVertex3fv((GLfloat*)(Square.getVertices(i)));
-//         glEnd();
-// //        cout << Square.getVertices(3)[0] << endl;
-//     }
-//     glutSwapBuffers();
-// }
-//
-// void idle(void)
-// {
-//     glutPostRedisplay();
-// }
-//
-// void mouse(int key, int state, int x, int y)
-// {
-//     int hy = MainWindow.getHeight();
-//     bool inside;
-//
-//     y = hy - y; //Adjusting Y-Axis
-//
-//     inside = Square.insideSquare(x,y); //Test if the mouse click was inside of the square
-//
-//     if (key == GLUT_LEFT_BUTTON && state == GLUT_DOWN && DRAWN_FLAG == false)
-//     {
-//         DRAWN_FLAG = true;
-//         Square.setXc(x);
-//         Square.setYc(y);
-//         Square.updateVertices();
-//         ALTERATION_STATE = true;
-//
-//     } else if(inside && key == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
-//         {
-//             mx_click = x;
-//             my_click = y;
-//             INSIDE_SQUARE = true;
-//         }
-//         else INSIDE_SQUARE = false;
-//
-//     if (key == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
-//     {
-//         if(inside)
-//         {
-//             DRAWN_FLAG = false;
-//             ALTERATION_STATE = false;
-//         }
-//     }
-// }
-//
-// void mouseMotion(int x, int y)
-// {
-//     if(ALTERATION_STATE && INSIDE_SQUARE)
-//     {
-//         int hy = MainWindow.getHeight();
-//         float dx, dy;
-//
-//         y = hy - y; //Adjusting Y-Axis
-//
-//         //calculating difference between mouse position and square's center
-//         dx = x - mx_click;
-//         dy = y - my_click;
-//
-//         Square.translate(dx, dy);
-//
-//         //Updating mouse position
-//         mx_click = x;
-//         my_click = y;
-//     }
-// }
+void drawCircle(Circulo &circ)
+{
+    float dx, dy;
+    glColor3fv((GLfloat*)(circ.getRGBColors()));
+    glBegin(GL_TRIANGLE_FAN);
+		glVertex2f(circ.getXc(), circ.getYc());
+		for(int i = 0; i <= circ.getDrawResolution(); i++)
+        {
+            dx = circ.getXc() + (circ.getRadius() * cos(i * 2.0*M_PI / circ.getDrawResolution()));
+            dy = circ.getYc() + (circ.getRadius() * sin(i * 2.0*M_PI / circ.getDrawResolution()));
+			glVertex2f(dx, dy);
+		}
+    glEnd();
+}
+
+void init(void)
+{
+    GLfloat xi, xf;
+    GLfloat yi, yf;
+
+    /*Selecting background color*/
+    //cout << " Janela "<< MainWindow.getBgColors(RED) << MainWindow.getBgColors(GREEN) << MainWindow.getBgColors(BLUE) << endl;
+    glClearColor(MainWindow.getBgColors(RED),MainWindow.getBgColors(GREEN),MainWindow.getBgColors(BLUE), 0.0);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+
+    xi = arena[0].getXc() - arena[0].getRadius();
+    xf = arena[0].getXc() + arena[0].getRadius();
+    yi = arena[0].getYc() - arena[0].getRadius();
+    yf = arena[0].getYc() + arena[0].getRadius();
+
+    glOrtho(xi,xf,yi,yf,-1.0,1.0);
+}
+
+void display(void)
+{
+    /*Cleaning pixels */
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    for(int i=0; i < 2; i++)
+        drawCircle(arena[i]);
+
+    drawRectangle(rect);
+
+    for(vector<Circulo>::iterator it = enemies.begin(); it != enemies.end(); it++)
+        drawCircle(*it);
+
+    drawCircle(player);
+
+    glutSwapBuffers();
+}
+
+void idle(void)
+{
+    float dx = 0, dy = 0;
+    float tx, ty;
+    const int STEP = 3;
+
+    if(key_status['w'])
+        dy += STEP;
+    if(key_status['s'])
+        dy -= STEP;
+    if(key_status['d'])
+        dx += STEP;
+    if(key_status['a'])
+        dx -= STEP;
+
+    tx = player.getXc();
+    ty = player.getYc();
+
+    player.setXc(tx + dx);
+    player.setYc(ty + dy);
+    bool teste = true;
+
+    for(vector<Circulo>::iterator it = enemies.begin(); it != enemies.end(); it++)
+    {
+        teste = teste && (*it).outsideCircle(player);
+    }
+
+    if(arena[0].insideCircle(player) && arena[1].outsideCircle(player) && teste);
+    else
+    {
+        player.setXc(tx);
+        player.setYc(ty);
+    }
+
+    glutPostRedisplay();
+}
+
+void keyUp (unsigned char key, int x, int y)
+{
+    switch (key)
+    {
+        case 'w':
+        case 'W':
+          key_status['w'] = 0;
+          break;
+
+        case 's':
+        case 'S':
+          key_status['s'] = 0;
+          break;
+
+        case 'd':
+        case 'D':
+          key_status['d'] = 0;
+          break;
+
+        case 'a':
+        case 'A':
+          key_status['a'] = 0;
+          break;
+      }
+}
+
+void keypress (unsigned char key, int x, int y)
+{
+  switch (key)
+  {
+      case 'w':
+      case 'W':
+        //gy += 0.1;
+        key_status['w'] = 1;
+        break;
+
+      case 's':
+      case 'S':
+        // gy -= 0.1;
+        key_status['s'] = 1;
+        break;
+
+      case 'd':
+      case 'D':
+        // gx += 0.1;
+        key_status['d'] = 1;
+        break;
+
+      case 'a':
+      case 'A':
+        // gx -= 0.1;
+        key_status['a'] = 1;
+        break;
+
+      case 'e':
+        exit(0);
+  }
+}

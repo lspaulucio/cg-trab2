@@ -4,7 +4,7 @@ Janela::Janela()
 {
     width = height = 0;
     for(int i = 0; i < 3; i++)
-        bgColors[i] = 0.0;
+        bgColors[i] = 1.0;
 }
 
 int Janela::getWidth() const

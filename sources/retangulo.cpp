@@ -142,8 +142,8 @@ void Retangulo::updateVertices()
     //counter clock-wise
     //Vertice one already in correct position
 
-//    vertices[0][X_AXIS] = this->xc;
-//    vertices[0][Y_AXIS] = this->yc;
+    vertices[0][X_AXIS] = this->xc;
+    vertices[0][Y_AXIS] = this->yc;
 
     //Vertice two
     vertices[1][X_AXIS] = this->xc;

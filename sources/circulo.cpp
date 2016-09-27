@@ -4,11 +4,32 @@ Circulo::Circulo()
 {
     radius = 0;
     xc = yc = 0;
+    drawResolution = 100;
+}
+
+Circulo::Circulo(const Circulo &c)
+{
+    this->radius = c.radius;
+    this->xc = c.xc;
+    this->yc = c.yc;
+    this->setRGBColors(c.getRGBColors());
+    this->id = c.id;
+    this->drawResolution = c.drawResolution;
 }
 
 float Circulo::getRadius() const
 {
     return this->radius;
+}
+
+void Circulo::setDrawResolution(int new_resolution)
+{
+    this->drawResolution = new_resolution;
+}
+
+int Circulo::getDrawResolution() const
+{
+    return this->drawResolution;
 }
 
 void Circulo::setRadius(float radius)
@@ -124,12 +145,43 @@ bool Circulo::insideCircle(float x, float y) const
 
     dist = sqrt((dx*dx) + (dy*dy));
 
-    if(dist <= radius) {
+    if(dist <= this->radius) {
         return true;
     }
     else {
         return false;
     }
+}
+
+bool Circulo::insideCircle(Circulo &circ) const
+{
+    float dx, dy, dist;
+
+    dx = this->xc - circ.getXc();
+    dy = this->yc - circ.getYc();
+
+    dist = sqrt((dx*dx) + (dy*dy));
+    if(dist <= abs(this->radius - circ.getRadius()))
+    {
+        return true;
+    }
+    else return false;
+}
+
+bool Circulo::outsideCircle(Circulo &circ) const
+{
+    float dx, dy, dist;
+
+    dx = this->xc - circ.getXc();
+    dy = this->yc - circ.getYc();
+
+    dist = sqrt((dx*dx) + (dy*dy));
+    if(dist > (this->radius + circ.getRadius()))
+    {
+        return true;
+    }
+    else return false;
+
 }
 
 Circulo::~Circulo(){};

@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <math.h>
+#include <stdlib.h>
 #include "types.h"
 
 class Circulo
@@ -11,15 +12,22 @@ class Circulo
         float radius;
         float RGBColors[3];
         float xc, yc;
+        int drawResolution;
         std::string id;
 
     public:
 
         Circulo();
 
+        Circulo(const Circulo&);
+
         float getRadius() const;
 
         void setRadius(float);
+
+        int getDrawResolution() const;
+
+        void setDrawResolution(int);
 
         const float* getRGBColors() const;
 
@@ -46,6 +54,10 @@ class Circulo
         void translate(float, float);
 
         bool insideCircle(float, float) const;
+
+        bool insideCircle(Circulo&) const;
+
+        bool outsideCircle(Circulo&) const;
 
         ~Circulo();
 
