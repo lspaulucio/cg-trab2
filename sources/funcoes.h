@@ -8,6 +8,7 @@
 #include <math.h>
 #include "types.h"
 #include "../tinyxml2/tinyxml2.h"
+#include "forma.h"
 #include "janela.h"
 #include "circulo.h"
 #include "retangulo.h"
@@ -27,8 +28,8 @@ void keypress (unsigned char, int, int);
 void keyUp (unsigned char, int, int);
 
 //Drawing functions
-void drawRectangle(Retangulo&);
-void drawCircle(Circulo&);
+void drawRectangle(float, float, float, float, const float colors[3] = COLOR_DEFAULT);
+void drawCircle(float, float, float, const float colors[3] = COLOR_DEFAULT, int resolution=100);
 
 
 

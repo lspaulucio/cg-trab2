@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include "tinyxml2/tinyxml2.h"
+#include "sources/forma.h"
 #include "sources/funcoes.h"
 #include "sources/janela.h"
 #include "sources/retangulo.h"

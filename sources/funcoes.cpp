@@ -163,25 +163,27 @@ void readXMLFile(const char *path)
 
 //OpenGL functions
 
-void drawRectangle(Retangulo &rect)
+void drawRectangle(float x1, float y1, float x2, float y2, const float colors[3])
 {
-    glColor3fv((GLfloat*)(rect.getRGBColors()));
+    glColor3fv((GLfloat*)(colors));
     glBegin(GL_POLYGON);
-        for(int i = 0; i < 4; i++)
-            glVertex3fv((GLfloat*)(rect.getVertices(i)));
+        glVertex3f(x1, y1, 0.0);
+        glVertex3f(x1, y2, 0.0);
+        glVertex3f(x2, y2, 0.0);
+        glVertex3f(x2, y1, 0.0);
     glEnd();
 }
 
-void drawCircle(Circulo &circ)
+void drawCircle(float xc, float yc, float radius, const float colors[3], int resolution)
 {
     float dx, dy;
-    glColor3fv((GLfloat*)(circ.getRGBColors()));
+    glColor3fv((GLfloat*)(colors));
     glBegin(GL_TRIANGLE_FAN);
-		glVertex2f(circ.getXc(), circ.getYc());
-		for(int i = 0; i <= circ.getDrawResolution(); i++)
+		glVertex2f(xc, yc);
+		for(int i = 0; i <= resolution; i++)
         {
-            dx = circ.getXc() + (circ.getRadius() * cos(i * 2.0*M_PI / circ.getDrawResolution()));
-            dy = circ.getYc() + (circ.getRadius() * sin(i * 2.0*M_PI / circ.getDrawResolution()));
+            dx = xc + (radius * cos(i * 2.0*M_PI / resolution));
+            dy = yc + (radius * sin(i * 2.0*M_PI / resolution));
 			glVertex2f(dx, dy);
 		}
     glEnd();
@@ -212,14 +214,14 @@ void display(void)
     glClear(GL_COLOR_BUFFER_BIT);
 
     for(int i=0; i < 2; i++)
-        drawCircle(arena[i]);
+        arena[i].draw();
 
-    drawRectangle(rect);
+    rect.draw();
 
     for(vector<Circulo>::iterator it = enemies.begin(); it != enemies.end(); it++)
-        drawCircle(*it);
+        (*it).draw();
 
-    drawCircle(player);
+    player.draw();
 
     glutSwapBuffers();
 }

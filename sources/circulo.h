@@ -4,16 +4,14 @@
 #include <iostream>
 #include <math.h>
 #include <stdlib.h>
+#include "forma.h"
 #include "types.h"
 
-class Circulo
+class Circulo: public Forma
 {
     private:
         float radius;
-        float RGBColors[3];
-        float xc, yc;
         int drawResolution;
-        std::string id;
 
     public:
 
@@ -29,28 +27,6 @@ class Circulo
 
         void setDrawResolution(int);
 
-        const float* getRGBColors() const;
-
-        const float getRGBColors(COLOR_ID) const;
-
-        int colorVerification(std::string);
-
-        void setRGBColors(const float[3]);
-
-        void setRGBColors(std::string);
-
-        float getXc() const;
-
-        void setXc(float);
-
-        float getYc() const;
-
-        void setYc(float);
-
-        const std::string &getId() const;
-
-        void setId(const std::string&);
-
         void translate(float, float);
 
         bool insideCircle(float, float) const;
@@ -58,6 +34,8 @@ class Circulo
         bool insideCircle(Circulo&) const;
 
         bool outsideCircle(Circulo&) const;
+
+        void draw();
 
         ~Circulo();
 
