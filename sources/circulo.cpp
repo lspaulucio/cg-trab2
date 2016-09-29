@@ -78,7 +78,7 @@ bool Circulo::outsideCircle(Circulo &circ) const
     dy = this->getYc() - circ.getYc();
 
     dist = sqrt((dx*dx) + (dy*dy));
-    if(dist > (this->radius + circ.getRadius()))
+    if(dist >= (this->radius + circ.getRadius()))
     {
         return true;
     }

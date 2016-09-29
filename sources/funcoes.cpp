@@ -230,7 +230,7 @@ void idle(void)
 {
     float dx = 0, dy = 0;
     float tx, ty;
-    const int STEP = 3;
+    const float STEP = 0.5;
 
     if(key_status['w'])
         dy += STEP;
@@ -244,9 +244,10 @@ void idle(void)
     tx = player.getXc();
     ty = player.getYc();
 
-    player.setXc(tx + dx);
-    player.setYc(ty + dy);
     bool teste = true;
+
+    // Test new position x
+    player.setXc(tx + dx);
 
     for(vector<Circulo>::iterator it = enemies.begin(); it != enemies.end(); it++)
     {
@@ -257,6 +258,19 @@ void idle(void)
     else
     {
         player.setXc(tx);
+    }
+
+    // Test new position y
+    player.setYc(ty + dy);
+
+    for(vector<Circulo>::iterator it = enemies.begin(); it != enemies.end(); it++)
+    {
+        teste = teste && (*it).outsideCircle(player);
+    }
+
+    if(arena[0].insideCircle(player) && arena[1].outsideCircle(player) && teste);
+    else
+    {
         player.setYc(ty);
     }
 
