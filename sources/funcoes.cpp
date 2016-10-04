@@ -230,7 +230,7 @@ void idle(void)
 {
     float dx = 0, dy = 0;
     float tx, ty;
-    const float STEP = 0.5;
+    const float STEP = 1;
 
     if(key_status['w'])
         dy += STEP;
@@ -309,29 +309,25 @@ void keypress (unsigned char key, int x, int y)
   {
       case 'w':
       case 'W':
-        //gy += 0.1;
         key_status['w'] = 1;
         break;
 
       case 's':
       case 'S':
-        // gy -= 0.1;
         key_status['s'] = 1;
         break;
 
       case 'd':
       case 'D':
-        // gx += 0.1;
         key_status['d'] = 1;
         break;
 
       case 'a':
       case 'A':
-        // gx -= 0.1;
         key_status['a'] = 1;
         break;
 
-      case 'e':
-        exit(0);
+    //   case 'e':
+    //     exit(1);
   }
 }
