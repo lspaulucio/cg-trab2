@@ -32,7 +32,7 @@ void readXMLFile(const char *path)
 
     if(statusLoad != XML_SUCCESS) //Test if file has been opened correctly
     {
-        cerr << "Error opening file" << endl;
+        cerr << "Error opening configuration file\n Program will be finished" << endl;
         exit(XML_ERROR_FILE_READ_ERROR);
     }
 
@@ -40,7 +40,7 @@ void readXMLFile(const char *path)
 
     if(!pRoot)
     {
-        cerr << "Error parsing element\n Program will be terminated" << endl;
+        cerr << "Error parsing element on configuration file\n Program will be finished" << endl;
         exit(XML_ERROR_PARSING_ELEMENT);
     }
     //cout << pRoot->Value() << endl;
@@ -67,7 +67,7 @@ void readXMLFile(const char *path)
 
     if(statusLoad != XML_SUCCESS) //Test if file has been opened correctly
     {
-        cerr << "Error opening file" << endl;
+        cerr << "Error opening svg file\n Program will be finished" << endl;
         exit(XML_ERROR_FILE_READ_ERROR);
     }
 
@@ -75,7 +75,7 @@ void readXMLFile(const char *path)
 
     if(!pRoot)
     {
-        cerr << "Error parsing element\n Program will be terminated" << endl;
+        cerr << "Error parsing element on svg file\n Program will be finished" << endl;
         exit(XML_ERROR_PARSING_ELEMENT);
     }
 //    cout << pRoot->Value() << endl;
