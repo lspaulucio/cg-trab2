@@ -32,7 +32,7 @@ void readXMLFile(const char *path)
 
     if(statusLoad != XML_SUCCESS) //Test if file has been opened correctly
     {
-        cerr << "Error opening configuration file\n Program will be finished" << endl;
+        cerr << "Error opening configuration file\nProgram will be finished" << endl;
         exit(XML_ERROR_FILE_READ_ERROR);
     }
 
@@ -40,7 +40,7 @@ void readXMLFile(const char *path)
 
     if(!pRoot)
     {
-        cerr << "Error parsing element on configuration file\n Program will be finished" << endl;
+        cerr << "Error parsing element on configuration file\nProgram will be finished" << endl;
         exit(XML_ERROR_PARSING_ELEMENT);
     }
     //cout << pRoot->Value() << endl;
@@ -56,18 +56,30 @@ void readXMLFile(const char *path)
 //    cout << svg_path << endl;
 
     //Path and name to svg file
-    pathFile = svg_path;
+
+    if(svg_path[0] == '~') //Testing if there is a tilde on beginning of path
+    {
+        pathFile = getenv("HOME");
+        svg_path.erase(0,1);
+        pathFile += svg_path;
+        // cout << pathFile << endl;
+    }
+    else
+    {
+        pathFile = svg_path;
+    }
+
     pathFile += svg_name += ".";
     pathFile += svg_type;
 
-    //cout << pathFile << endl;
+    // cout << pathFile << endl;
 
     //SVG file
     statusLoad = svg_file.LoadFile(pathFile.c_str());
 
     if(statusLoad != XML_SUCCESS) //Test if file has been opened correctly
     {
-        cerr << "Error opening svg file\n Program will be finished" << endl;
+        cerr << "Error opening svg file\nProgram will be finished" << endl;
         exit(XML_ERROR_FILE_READ_ERROR);
     }
 
@@ -75,7 +87,7 @@ void readXMLFile(const char *path)
 
     if(!pRoot)
     {
-        cerr << "Error parsing element on svg file\n Program will be finished" << endl;
+        cerr << "Error parsing element on svg file\nProgram will be finished" << endl;
         exit(XML_ERROR_PARSING_ELEMENT);
     }
 //    cout << pRoot->Value() << endl;
